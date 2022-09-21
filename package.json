@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "Masterflitzer <60170948+Masterflitzer@users.noreply.github.com>",
-  "license": "GPL-3.0-or-later",
+  "license": "MPL-2.0",
   "dependencies": {
     "jsdom": "^20.0.0",
     "node-fetch": "^3.2.10",
