@@ -1,0 +1,23 @@
+{
+  "name": "apkmirror-downloader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "tsc && node ."
+  },
+  "keywords": [],
+  "author": "Masterflitzer <60170948+Masterflitzer@users.noreply.github.com>",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "jsdom": "^20.0.0",
+    "node-fetch": "^3.2.10",
+    "typescript": "^4.8.2"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^20.0.0",
+    "@types/node": "^18.7.18",
+    "@types/node-fetch": "^2.6.2"
+  }
+}
