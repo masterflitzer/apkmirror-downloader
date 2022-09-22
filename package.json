@@ -2,7 +2,7 @@
   "name": "apkmirror-downloader",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "dist/main.js",
   "type": "module",
   "scripts": {
     "start": "tsc && node ."
