@@ -1,0 +1,30 @@
+[
+  {
+    "packageName": "com.reddit.frontpage",
+    "urlPath": "/apk/redditinc/reddit/"
+  },
+  {
+    "packageName": "com.ss.android.ugc.trill",
+    "urlPath": "/apk/tiktok-pte-ltd/tik-tok/"
+  },
+  {
+    "packageName": "com.twitter.android",
+    "urlPath": "/apk/twitter-inc/twitter/"
+  },
+  {
+    "packageName": "de.dwd.warnapp",
+    "urlPath": "/apk/deutscher-wetterdienst/warnwetter/"
+  },
+  {
+    "packageName": "com.google.android.youtube",
+    "urlPath": "/apk/google-inc/youtube/"
+  },
+  {
+    "packageName": "com.google.android.apps.youtube.music",
+    "urlPath": "/apk/google-inc/youtube-music/"
+  },
+  {
+    "packageName": "com.mgoogle.android.gms",
+    "urlPath": "/apk/team-vanced/microg-youtube-vanced/"
+  }
+]
