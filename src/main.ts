@@ -1,4 +1,4 @@
-import { readFile } from "fs/promises";
+import { readFile, mkdir } from "fs/promises";
 import { createWriteStream } from "fs";
 import { JSDOM } from "jsdom";
 import fetch from "node-fetch";
@@ -174,10 +174,16 @@ async function getDocumentFromURL(url: URL): Promise<Document> {
 
 async function download(name: string, url: URL): Promise<void> {
     const dl = fetch(url.href);
-    const fileStream = createWriteStream(`${name}.apk`);
+    const path = `apps/${name}.apk`;
+    await mkdir("apps", { recursive: true });
     const response = await dl;
+    const contentType = response.headers.get("Content-Type");
+    const isOctetStream = contentType == "application/octet-stream";
     const body = response.body;
-    if (body == null)
+    if (body != null && isOctetStream) {
+        const fileStream = createWriteStream(path);
+        body.pipe(fileStream);
+    } else {
         throw new Error("An error occured while trying to download the file");
-    body.pipe(fileStream);
+    }
 }
