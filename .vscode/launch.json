@@ -11,8 +11,14 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}/main.ts",
-      "preLaunchTask": "${defaultBuildTask}"
+      "program": "${workspaceFolder}/src/main.ts",
+      "args": [
+        "./apps.json"
+      ],
+      "preLaunchTask": "${defaultBuildTask}",
+      "localRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+      "pauseForSourceMap": true
     }
   ]
 }
