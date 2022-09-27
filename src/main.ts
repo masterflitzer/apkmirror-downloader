@@ -48,11 +48,11 @@ async function downloadApp(name: string, urlPath: string): Promise<void> {
     let document;
     let url = new URL(urlPath, baseURL);
 
-    downloadFunctions.forEach(async (func) => {
+    for (const dlFunc of downloadFunctions) {
         url = new URL(urlPath, baseURL);
         document = await getDocumentFromURL(url);
-        urlPath = func(document);
-    });
+        urlPath = dlFunc(document);
+    }
 
     await download(name, new URL(urlPath, baseURL));
 }
