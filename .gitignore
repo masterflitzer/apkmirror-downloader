@@ -145,3 +145,6 @@ dist
 
 *.js
 *.map
+
+# Downloaded Files
+apps/
