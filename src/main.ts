@@ -28,18 +28,17 @@ try {
 const baseURL = "https://apkmirror.com";
 
 const downloadFunctions = [
-    getLatestStableURL,
     getNonBundleURL,
     getDownloadPageURL,
     getDirectDownloadURL,
 ];
 
-const downloads = apps.map(({ packageName, urlPath }) =>
-    downloadApp(packageName, urlPath)
+const downloads = apps.map(({ packageName, urlPath, version }) =>
+    downloadApp(packageName, urlPath, version)
 );
 await Promise.allSettled(downloads);
 
-async function downloadApp(name: string, urlPath: string): Promise<void> {
+async function downloadApp(name: string, urlPath: string, version?: string): Promise<void> {
     if (!name || !urlPath)
         throw new Error(
             "At least one empty argument was passed to this function"
@@ -47,6 +46,16 @@ async function downloadApp(name: string, urlPath: string): Promise<void> {
 
     let document;
     let url = new URL(urlPath, baseURL);
+
+    if(version){
+        document = await getDocumentFromURL(url);
+        urlPath = getCustomVersionURL(version,document);
+    } else {
+        document = await getDocumentFromURL(url);
+        urlPath = getLatestStableURL(document);
+    }
+
+    console.log(`Fetched Version URL: ${new URL(urlPath, baseURL)}`)
 
     for (const dlFunc of downloadFunctions) {
         url = new URL(urlPath, baseURL);
@@ -90,6 +99,36 @@ function getLatestStableURL(document: Document): string {
     }
 
     return latestStable.href;
+}
+
+function getCustomVersionURL(version: string, document: Document): string {
+    const containers = queryAll(document.body, ".listWidget");
+    const versionContainer = findContainerWithHeading(
+        containers,
+        "All versions"
+    );
+    const versions = queryAll(
+        versionContainer,
+        ".appRow .appRowTitle > a"
+    ) as NodeListOf<HTMLAnchorElement>;
+
+    const customVersion = Array.from(versions)
+        .filter((x) => x != null)
+        .find((x) => x.textContent?.toLowerCase().includes(version));
+
+    if (customVersion == null) {
+        const moreUploads = versionContainer.querySelector(
+            ":scope > :last-child a"
+        ) as HTMLAnchorElement | null;
+        if (moreUploads != null) {
+            console.error(
+                `Here you can manually browse the latest APKs: ${moreUploads.href}`
+            );
+        }
+        throw new Error("Couldn't find anchor element for latest stable APK");
+    }
+
+    return customVersion.href;
 }
 
 function getNonBundleURL(document: Document): string {
@@ -178,9 +217,9 @@ async function download(name: string, url: URL): Promise<void> {
     await mkdir("apps", { recursive: true });
     const response = await dl;
     const contentType = response.headers.get("Content-Type");
-    const isOctetStream = contentType == "application/octet-stream";
+    const isAPK = contentType == "application/vnd.android.package-archive";
     const body = response.body;
-    if (body != null && isOctetStream) {
+    if (body != null && isAPK) {
         const fileStream = createWriteStream(path);
         body.pipe(fileStream);
     } else {
