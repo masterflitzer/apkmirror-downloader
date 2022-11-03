@@ -15,10 +15,10 @@ if (configPath == null) {
     exit(0);
 }
 
-let apps: Config;
+let config: Config;
 try {
     const json = await readFile(configPath, { encoding: "utf-8" });
-    apps = JSON.parse(json);
+    config = JSON.parse(json);
 } catch (error) {
     throw new Error(
         "Couln't parse config file, make sure you provided the correct path and the file contains valid json"
@@ -33,7 +33,7 @@ const downloadFunctions = [
     getDirectDownloadURL,
 ];
 
-const downloads = apps.map(({ packageName, urlPath, version }) =>
+const downloads = config.apps.map(({ packageName, urlPath, version }) =>
     downloadApp(packageName, urlPath, version)
 );
 await Promise.allSettled(downloads);
@@ -144,6 +144,16 @@ function getNonBundleURL(document: Document): string {
         .filter((x) => {
             const length = x.parentElement?.children.length;
             return length != null && length > 1;
+        })
+        .filter((x) => {
+            if(config.options?.arch){
+                const mainEl = x.parentElement?.parentElement;
+                const archEl = mainEl?.children?.[1];
+                const arch = archEl?.textContent;
+                return (arch == config.options.arch || arch == "universal");
+            } else {
+                return true;
+            }
         })
         .find((x) => {
             const badges = queryAll(x.parentElement, ".apkm-badge");
