@@ -1,15 +1,12 @@
 {
   "name": "apkmirror-downloader",
   "version": "1.0.0",
-  "description": "",
   "main": "dist/main.js",
-  "type": "module",
   "scripts": {
-    "start": "tsc && node ."
+    "start": "npx tsc -b && node ."
   },
-  "keywords": [],
-  "author": "Masterflitzer <60170948+Masterflitzer@users.noreply.github.com>",
-  "license": "MPL-2.0",
+  "type": "module",
+  "private": true,
   "dependencies": {
     "jsdom": "^20.0.0",
     "node-fetch": "^3.2.10",
